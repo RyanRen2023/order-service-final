@@ -60,6 +60,12 @@ SERVICEBUSBID=$(az servicebus namespace show --name <namespace-name> --resource-
 
 az role assignment create --role "Azure Service Bus Data Sender" --assignee $PRINCIPALID --scope $SERVICEBUSBID
 ```
+```bash
+PRINCIPALID=$(az ad signed-in-user show --query id -o tsv)
+SERVICEBUSBID=$(az servicebus namespace show --name ryanfinal --resource-group cst8915finalRG --query id -o tsv)
+
+az role assignment create --role "Azure Service Bus Data Sender" --assignee $PRINCIPALID --scope $SERVICEBUSBID
+```
 
 Next, get the connection information for the Azure Service Bus queue and save the values to environment variables.
 
@@ -69,13 +75,17 @@ Next, get the hostname for the Azure Service Bus queue.
 HOSTNAME=$(az servicebus namespace show --name <namespace-name> --resource-group <resource-group-name> --query serviceBusEndpoint -o tsv | sed 's/https:\/\///;s/:443\///')
 ```
 
+```bash
+HOSTNAME=$(az servicebus namespace show --name ryanfinal --resource-group cst8915finalRG --query serviceBusEndpoint -o tsv | sed 's/https:\/\///;s/:443\///')
+```
+
 Finally, save the environment variables to a `.env` file.
 
 ```bash
 cat << EOF > .env
 USE_WORKLOAD_IDENTITY_AUTH=true
 AZURE_SERVICEBUS_FULLYQUALIFIEDNAMESPACE=$HOSTNAME
-ORDER_QUEUE_NAME=orders
+ORDER_QUEUE_NAME=order-queue
 EOF
 
 # load the environment variables
