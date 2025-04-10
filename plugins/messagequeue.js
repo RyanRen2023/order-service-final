@@ -45,12 +45,13 @@ module.exports = fp(async function (fastify, opts) {
 
       console.log(`sending message ${body} to ${process.env.ORDER_QUEUE_NAME} on ${fullyQualifiedNamespace} using Microsoft Entra ID Workload Identity credentials`);
 
+      const queueName = process.env.ORDER_QUEUE_NAME
+
       if (!fullyQualifiedNamespace || !queueName) {
         console.log('no hostname or queue name set for message queue. exiting.');
         return;
       }
 
-      const queueName = process.env.ORDER_QUEUE_NAME
 
       const credential = new DefaultAzureCredential();
 
