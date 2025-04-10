@@ -73,7 +73,10 @@ module.exports = fp(async function (fastify, opts) {
           console.log(`finally message ${body} sent to ${queueName} on ${fullyQualifiedNamespace}`);
         }
       }
-      sendMessage().catch(console.error);
+      sendMessage().catch((err) => {
+        console.log("Error occurred: ", err);
+        return;
+      });
     } else {
       console.log('no credentials set for message queue. exiting.')
       return
