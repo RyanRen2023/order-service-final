@@ -66,11 +66,11 @@ module.exports = fp(async function (fastify, opts) {
             throw new Error("Message too big to fit in a batch");
           }
           await sender.sendMessages(batch);
+          console.log("✅ Message sent successfully to Azure Service Bus.");
           await sender.close();
-
         } finally {
           await sbClient.close();
-          console.log(`message ${body} sent to ${queueName} on ${fullyQualifiedNamespace}`);
+          console.log(`finally message ${body} sent to ${queueName} on ${fullyQualifiedNamespace}`);
         }
       }
       sendMessage().catch(console.error);
